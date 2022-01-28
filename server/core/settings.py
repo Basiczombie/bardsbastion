@@ -43,7 +43,7 @@ CORE_APPS = [
 ]
 
 PROJECT_APPS = [
-
+    'api.audit',
 ]
 
 INSTALLED_APPS = CORE_APPS + PROJECT_APPS
