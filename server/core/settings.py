@@ -38,7 +38,6 @@ CORE_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django-elasticsearch-dsl',
     'corsheaders',
     'rest_framework',
 ]
@@ -92,14 +91,6 @@ DATABASES = {
         'HOST': 'db',
         'PORT': 5432,
     }
-}
-
-# ELASTICSEARCH
-
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': os.environ.get("ELASTICSEARCH_DSL_HOSTS", 'localhost:9200')
-    },
 }
 
 # Password validation

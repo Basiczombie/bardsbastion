@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM python:3
-LABEL Name="Bastion Server"
+LABEL Name="db"
 LABEL Version="0.0.1"
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1

@@ -1,20 +1,6 @@
 version: "3.9"
 
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_NAME=${POSTGRES_NAME}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  es:
-    image: elasticsearch:7.8.1
-    environment:
-      - discovery.type=single-node
-    ports:
-      - 9200:9200
   django:
     build:
       context: ./server
@@ -32,17 +18,37 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       - db
-      - es
+    networks:
+      - bastionnet
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_NAME=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - bastionnet
   node:
     build:
-      context: ./client/webui
+      context: ./client
       dockerfile: ./compose/Dockerfile
     command: npm start
     volumes:
-      - ./client/webui:/webui
-      - /client/webui/node_modules
+      - ./client:/client
+      - /client/node_modules
     ports:
       - 3000:3000
       - 3001:3001
     environment:
       - CHOKIDAR_USEPOLLING=true
+    networks:
+      - bastionnet
+  
+volumes:
+  postgres_data:
+
+networks:
+  bastionnet:
+    driver: bridge
